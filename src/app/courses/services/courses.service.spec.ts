@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
 import { COURSES } from "../../../../server/db-data";
@@ -65,6 +66,20 @@ describe('CoursesService', () => {
             ...COURSES[6],
             ...changes
         });
+    });
+
+    it('should give an error if saveCourse fails', () => {
+        const changes: Partial<Course> = {titles: {description: 'Angular Security'}};
+        coursesService.saveCourse(6, changes).subscribe(
+            () => fail('The saveCourse method should\'ve failed'),
+            (error: HttpErrorResponse) => {
+                expect(error.status).toBe(500);
+            }
+        );
+
+        const req = httpTestingController.expectOne('/api/courses/6');
+
+        req.flush('saveCourse failed', {status: 500, statusText: 'Internal server error'});
     });
 
     afterEach(() => {
