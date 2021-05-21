@@ -15,6 +15,7 @@ describe('CoursesCardListComponent', () => {
 
     let component: CoursesCardListComponent;
     let fixture: ComponentFixture<CoursesCardListComponent>;
+    let el: DebugElement;
 
     // beforeEach(async () => {
     //     await TestBed.configureTestingModule({
@@ -35,6 +36,7 @@ describe('CoursesCardListComponent', () => {
         .then(() => {
             fixture = TestBed.createComponent(CoursesCardListComponent);
             component = fixture.componentInstance;
+            el = fixture.debugElement;
         });
     }));
     
@@ -48,7 +50,15 @@ describe('CoursesCardListComponent', () => {
     
     it("should display the course list", () => {
         
-        pending();
+        component.courses = setupCourses();
+        fixture.detectChanges();
+        console.log(el.nativeElement.outerHTML);
+
+        const cards = el.queryAll(By.css('.course-card '));
+
+        expect(cards).toBeTruthy();
+
+        expect(cards.length).toBe(12, 'Unexpected number of courses');
         
     });
     
