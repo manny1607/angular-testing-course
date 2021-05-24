@@ -22,10 +22,24 @@ describe('HomeComponent', () => {
   let component:HomeComponent;
   let el: DebugElement;
 
-  beforeEach((() => {
+  beforeEach(async () => {
+    const coursesServiceSoy = jasmine.createSpyObj(CoursesService, ['findAllCourses']);
+    await TestBed.configureTestingModule({
+      imports: [
+        CoursesModule,
+        NoopAnimationsModule
+      ],
+      providers: [
+        {provide: CoursesService, useValue: coursesServiceSoy}
+      ]
+    }).compileComponents();
+  });
 
-
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    el = fixture.debugElement;
+  });
 
   it("should create the component", () => {
 
