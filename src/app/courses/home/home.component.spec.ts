@@ -25,6 +25,7 @@ describe('HomeComponent', () => {
   let coursesServiceSpy: jasmine.SpyObj<CoursesService>;
 
   const beginnerCourses = setupCourses().filter(course => course.category === 'BEGINNER');
+  const advancedCourses = setupCourses().filter(course => course.category === 'ADVANCED');
 
   beforeEach(async () => {
     coursesServiceSpy = jasmine.createSpyObj(CoursesService, ['findAllCourses']);
@@ -61,22 +62,42 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
 
     const tabs = el.queryAll(By.css('.mat-tab-label'));
-
+    
     expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
+
+    const beginnerTab = tabs[0].query(By.css('.mat-tab-label-content'));
+
+    expect(beginnerTab.nativeElement.innerText).toEqual('Beginners');
 
   });
 
 
   it("should display only advanced courses", () => {
 
-      pending();
+    coursesServiceSpy.findAllCourses.and.returnValue(of(advancedCourses));
+
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    
+    expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
+
+    const beginnerTab = tabs[0].query(By.css('.mat-tab-label-content'));
+
+    expect(beginnerTab.nativeElement.innerText).toEqual('Advanced');
 
   });
 
 
   it("should display both tabs", () => {
 
-    pending();
+    coursesServiceSpy.findAllCourses.and.returnValue(of(setupCourses()));
+
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+
+    expect(tabs.length).toBe(2, 'Unexpected number of tabs found');
 
   });
 
