@@ -1,6 +1,6 @@
 import { fakeAsync, flush, tick } from "@angular/core/testing";
 
-describe('Async example', () => {
+fdescribe('Async example', () => {
     // it('async example with Done', (done: DoneFn) => {
     //     let flag = false;
     //     setTimeout(() => {
@@ -37,4 +37,17 @@ describe('Async example', () => {
         expect(flag).toBeTrue();
         expect(badge).toBeTrue();
     }));
+
+    fit('async example - promises', () => {
+        let flag = false;
+
+        Promise.resolve().then(() => {
+            return Promise.resolve();
+        })
+        .then(() => {
+            flag = true;
+        });
+
+        expect(flag).toBeTrue();
+    });
 });
