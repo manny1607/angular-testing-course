@@ -1,4 +1,4 @@
-import { fakeAsync, flush, tick } from "@angular/core/testing";
+import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
 
 fdescribe('Async example', () => {
     // it('async example with Done', (done: DoneFn) => {
@@ -38,7 +38,7 @@ fdescribe('Async example', () => {
         expect(badge).toBeTrue();
     }));
 
-    fit('async example - promises', () => {
+    fit('async example - promises', fakeAsync(() => {
         let flag = false;
 
         Promise.resolve().then(() => {
@@ -48,6 +48,7 @@ fdescribe('Async example', () => {
             flag = true;
         });
 
+        flushMicrotasks();
         expect(flag).toBeTrue();
-    });
+    }));
 });
