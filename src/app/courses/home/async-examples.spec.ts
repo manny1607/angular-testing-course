@@ -1,4 +1,6 @@
 import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 fdescribe('Async example', () => {
     // it('async example with Done', (done: DoneFn) => {
@@ -52,7 +54,7 @@ fdescribe('Async example', () => {
         expect(flag).toBeTrue();
     }));
 
-    it('asyn example - promises and setTimeout', fakeAsync(() => {
+    it('async example - promises and setTimeout', fakeAsync(() => {
         let counter = 0;
 
         Promise.resolve().then(() => {
@@ -72,5 +74,21 @@ fdescribe('Async example', () => {
         tick(1000);
 
         expect(counter).toBe(11);
+    }));
+
+    it('async example - observables', fakeAsync(() => {
+        let flag = false;
+
+        const flag$ = of(flag).pipe(delay(1000));
+
+        flag$.subscribe(() => {
+            flag = true;
+        });
+
+        tick(1000);
+
+        expect(flag).toBeTrue();
+
+
     }));
 });
