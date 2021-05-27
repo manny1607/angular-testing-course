@@ -38,7 +38,7 @@ fdescribe('Async example', () => {
         expect(badge).toBeTrue();
     }));
 
-    fit('async example - promises', fakeAsync(() => {
+    it('async example - promises', fakeAsync(() => {
         let flag = false;
 
         Promise.resolve().then(() => {
@@ -50,5 +50,27 @@ fdescribe('Async example', () => {
 
         flushMicrotasks();
         expect(flag).toBeTrue();
+    }));
+
+    it('asyn example - promises and setTimeout', fakeAsync(() => {
+        let counter = 0;
+
+        Promise.resolve().then(() => {
+            counter += 10;
+
+            setTimeout(() => {
+                counter++;
+            }, 1000);
+        });
+
+        expect(counter).toBe(0);
+
+        flushMicrotasks();
+
+        expect(counter).toBe(10);
+
+        tick(1000);
+
+        expect(counter).toBe(11);
     }));
 });
